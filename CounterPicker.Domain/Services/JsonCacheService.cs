@@ -3,6 +3,7 @@ using CounterPicker.Domain.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace CounterPicker.Domain.Services
@@ -22,14 +23,19 @@ namespace CounterPicker.Domain.Services
         {
             const string cacheKey = "stariy_bog";
 
-            if (_memoryCache.TryGetValue(cacheKey, out Board? hero))
+            if (_memoryCache.TryGetValue(cacheKey, out Board? cachedBoard))
             {
-                return hero;
+                return cachedBoard;
             }
-            string json = await File.ReadAllTextAsync(_filePath);
-            var data = JsonSerializer.Deserialize<Board>(json);
 
-            _memoryCache.Set(cacheKey, json, TimeSpan.FromHours(1));
+            await using var stream = File.OpenRead(_filePath);
+
+            var data = await JsonSerializer.DeserializeAsync<Board>(stream, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            });
+
+            _memoryCache.Set(cacheKey, data, TimeSpan.FromHours(1));
             return data;
         }
     }

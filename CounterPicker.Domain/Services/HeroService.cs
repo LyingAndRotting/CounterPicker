@@ -6,6 +6,7 @@ namespace CounterPicker.Domain.Services
     public class HeroService : IHeroService
     {
         private readonly IJsonCacheService _jsonService;
+
         public HeroService(IJsonCacheService jsonService) 
         {
             _jsonService = jsonService;
@@ -32,7 +33,7 @@ namespace CounterPicker.Domain.Services
             {
                 return null;
             } 
-            return data?.heroes?.FirstOrDefault(p => p.id == id);
+            return data?.Heroes?.FirstOrDefault(p => p.id == id);
         }
 
     }

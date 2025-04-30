@@ -1,6 +1,8 @@
 ﻿using CounterPicker.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using CounterPicker.Domain.Models;
+using MediatR;
+using CounterPicker.Application.Features.Hero.Queries.GetAllHeroes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,20 +13,32 @@ namespace CounterPicker.Controllers
     public class HeroController : ControllerBase
     {
         private readonly IHeroService _heroService;
-        public HeroController(IHeroService heroService)
+        private IMediator _mediator;
+        public HeroController(IHeroService heroService, IMediator mediator )
         {
             _heroService = heroService;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public ActionResult<Board> GetAll()
         {
-            var result = _heroService.GetAll();
-            if (result ==  null)
+            try
             {
-                BadRequest("Result is null");
+                var query = new GetAllHeroesQuery();
+                var result = _mediator.Send(query);
+            
+                if (result ==  null)
+                {
+                    BadRequest("Result is null");
             }
             return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok();
         }
 
         [HttpGet("{id}")]

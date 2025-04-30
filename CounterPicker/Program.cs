@@ -1,4 +1,5 @@
 using CounterPicker.Domain.Services;
+using CounterPicker.Infrastructure;
 namespace CounterPicker
 {
     public class Program
@@ -6,15 +7,13 @@ namespace CounterPicker
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddMemoryCache();
+            builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddMvc();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IHeroService, HeroService>();
-            builder.Services.AddSingleton<IJsonCacheService, JsonCacheService>();
             var app = builder.Build();
-           
+
             app.MapControllers();
             app.UseSwagger();
             app.UseRouting();
