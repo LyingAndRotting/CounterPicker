@@ -20,11 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CounterPicker.Domain\CounterPicker.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Application\Features\Hero\Commands\" />
+    <Folder Include="Domain\" />
   </ItemGroup>
 
 </Project>

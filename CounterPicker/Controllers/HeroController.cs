@@ -1,8 +1,8 @@
-﻿using CounterPicker.Domain.Services;
-using Microsoft.AspNetCore.Mvc;
-using CounterPicker.Domain.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using CounterPicker.Application.Features.Hero.Queries.GetAllHeroes;
+using CounterPicker.Domain.Models;
+using CounterPicker.Domain.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,7 +13,7 @@ namespace CounterPicker.Controllers
     public class HeroController : ControllerBase
     {
         private readonly IHeroService _heroService;
-        private IMediator _mediator;
+        private readonly IMediator _mediator;
         public HeroController(IHeroService heroService, IMediator mediator )
         {
             _heroService = heroService;
@@ -21,18 +21,18 @@ namespace CounterPicker.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Board> GetAll()
+        public async Task<ActionResult<Board>> GetAll()
         {
             try
             {
                 var query = new GetAllHeroesQuery();
-                var result = _mediator.Send(query);
+                var result = await _mediator.Send(query);
             
                 if (result ==  null)
                 {
                     BadRequest("Result is null");
-            }
-            return Ok(result);
+                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -41,10 +41,10 @@ namespace CounterPicker.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<Hero> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Hero>> Get(int id)
         {
-            var result = _heroService.Get(id);
+            var result = await _heroService.Get(id);
             if (result == null)
             {
                 BadRequest("Result is null");
@@ -58,14 +58,15 @@ namespace CounterPicker.Controllers
             
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public void Delete(int id)
         {
+            
         }
     }
 }

@@ -12,9 +12,9 @@ namespace CounterPicker.Infrastructure
             services.AddSingleton<IJsonCacheService, JsonCacheService>();
             services.AddMemoryCache();
 
-            services.AddMediatR(configuration => 
+            services.AddMediatR(mediatRServiceConfiguration => 
             {
-                configuration.RegisterServicesFromAssembly(typeof(GetAllHeroesQuery).Assembly);
+                mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(GetAllHeroesQuery).Assembly);
             });
 
             return services;

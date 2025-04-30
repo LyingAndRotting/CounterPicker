@@ -1,4 +1,3 @@
-using CounterPicker.Domain.Services;
 using CounterPicker.Infrastructure;
 namespace CounterPicker
 {
@@ -19,6 +18,10 @@ namespace CounterPicker
             app.UseRouting();
             app.UseSwaggerUI();
 
+            if (app.Environment.IsDevelopment())
+            {
+                
+            }
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path == "/")
