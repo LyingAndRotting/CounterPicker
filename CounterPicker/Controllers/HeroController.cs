@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using CounterPicker.Application.Features.Hero.Queries.GetAllHeroes;
+using CounterPicker.Application.Features.Hero.Queries.GetHeroById;
+using CounterPicker.Application.Features.Hero.Queries.GetHeroByName;
 using CounterPicker.Domain.Models;
 using CounterPicker.Domain.Services;
 
@@ -44,14 +46,45 @@ namespace CounterPicker.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Hero>> Get(int id)
         {
-            var result = await _heroService.Get(id);
-            if (result == null)
+            try
             {
-                BadRequest("Result is null");
+                var query = new GetHeroByIdQuery(id);
+                var result = await _mediator.Send(query);
+                if (result == null)
+                {
+                    BadRequest("Result is null");
+                }
+
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok();
         }
 
+        [HttpGet("{name}")]
+        public async Task<ActionResult<Hero>> Get(string name)
+        {
+            try
+            {
+                var query = new GetHeroByNameQuery(name);
+                var result = await _mediator.Send(query);
+                if (result == null)
+                {
+                    BadRequest("Result is null");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok();
+        }
+        
         [HttpPost]
         public void Post()
         {

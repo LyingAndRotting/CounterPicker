@@ -4,7 +4,8 @@ namespace CounterPicker.Domain.Services
 {
     public interface IHeroService
     {
-        Task<Hero?> Get(int id);
+        Task<Hero?> GetById(int id);
         Task<Board?> GetAll();
+        Task<Hero?> GetByName(string requestName);
     }
 }

@@ -12,22 +12,28 @@ namespace CounterPicker.Domain.Services
         public async Task<Board?> GetAll()
         {
             var data = await _jsonService.GetDataAsync();
-            if (data == null)
-            {
-                return null;
-            }
             return data;
         }
 
-        public async Task<Hero?> Get(int id)
+        public async Task<Hero?> GetById(int id)
         {
             if (id is < 1 or > 126)
             {
-               
                 return null;
             }
             var data = await _jsonService.GetDataAsync();
             return data?.Heroes?.FirstOrDefault(p => p.Id == id);
+        }
+
+        public async Task<Hero?> GetByName(string? name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
+            var data = await _jsonService.GetDataAsync();
+            return data?.Heroes?.FirstOrDefault(p => p.LocalizedName?.ToLower() == name);;
         }
 
     }
