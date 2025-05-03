@@ -52,7 +52,7 @@ namespace CounterPicker.Controllers
                 var result = await _mediator.Send(query);
                 if (result == null)
                 {
-                    BadRequest("Result is null");
+                    return BadRequest("Result is null");
                 }
 
                 return Ok(result);
@@ -73,7 +73,7 @@ namespace CounterPicker.Controllers
                 var result = await _mediator.Send(query);
                 if (result == null)
                 {
-                    BadRequest("Result is null");
+                    return BadRequest("Result is null");
                 }
 
                 return Ok(result);

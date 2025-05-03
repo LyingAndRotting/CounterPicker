@@ -7,15 +7,12 @@ namespace CounterPicker
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddInfrastructure(builder.Configuration);
-            builder.Services.AddMvc();
             builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             var app = builder.Build();
 
             app.MapControllers();
             app.UseSwagger();
-            app.UseRouting();
             app.UseSwaggerUI();
 
             if (app.Environment.IsDevelopment())

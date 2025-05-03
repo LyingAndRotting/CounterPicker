@@ -31,10 +31,8 @@ namespace CounterPicker.Domain.Services
             {
                 return null;
             }
-
             var data = await _jsonService.GetDataAsync();
             return data?.Heroes?.FirstOrDefault(p => p.LocalizedName?.ToLower() == name);;
         }
-
     }
 }
